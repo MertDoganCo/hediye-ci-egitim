@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hediye-ci.com - Ultra Detaylı Yönetim Kılavuzu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: Kullanıcı deneyimini en üst düzeye çıkarmak için sol tarafta sabit bir navigasyon menüsü ve sağda dinamik olarak değişen bir içerik alanı içeren bir dashboard yapısı tasarlandı. Kullanıcı, 'Genel Bakış', 'Tema Yönetimi', 'Ürün Ekleme', 'Eklentiler' gibi ana başlıklara tek tıkla ulaşabilir. Bu yapı, bilgiyi aramak yerine keşfetmeyi teşvik eder ve konular arasında hızlı geçiş sağlayarak öğrenme sürecini basitleştirir. Özellikle 'Eklentiler' bölümü, her bir eklentinin ne işe yaradığını kartlar halinde sunarak karmaşıklığı azaltır ve yönetimi kolaylaştırır. Bu interaktif yaklaşım, statik bir dokümanın sıkıcılığını ortadan kaldırır ve kullanıcıyı sürece aktif olarak dahil eder. -->
+    <!-- Visualization & Content Choices: Bu rehberde karmaşık veri görselleştirmesi yerine, bilginin en anlaşılır şekilde sunulması hedeflenmiştir. 
+    - Genel Bakış: Amaç: Karşılama ve genel bilgilendirme. Yöntem: Metin blokları ve ikonlu kartlar. Etkileşim: Yok.
+    - Adım Adım Akışlar: Amaç: Yeni ürün ekleme gibi karmaşık süreçleri basitleştirmek. Yöntem: Numaralandırılmış, görsel olarak ayrıştırılmış adımlar (HTML/CSS). Etkileşim: Yok, sadece takip etmesi kolay bir yapı.
+    - Eklenti Listesi: Amaç: 20'den fazla eklentinin görevini net bir şekilde açıklamak. Yöntem: Her eklenti için bir kart. Kartta ikon, isim, görev ve yönetim notu bulunur. Etkileşim: Kartlara tıklandığında detaylı bilgi açılması planlanabilir, ancak mevcut yapıda sadelik ön planda tutulmuştur.
+    - Bakım Listesi: Amaç: Rutin görevleri hatırlatmak. Yöntem: İkonlu bir kontrol listesi (HTML/CSS). Etkileşim: Hover efektleri.
+    Bu seçimler, teknik olmayan bir kullanıcının bile siteyi kolayca yönetebilmesini sağlamak için yapılmıştır; karmaşık grafikler yerine net, eyleme dönük ve yapılandırılmış metinler kullanılmıştır. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8;
+            color: #4a4a4a;
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        .sidebar-link {
+            transition: all 0.2s ease-in-out;
+        }
+        .sidebar-link.active, .sidebar-link:hover {
+            background-color: #F3EFEA;
+            color: #9C6644;
+            transform: translateX(4px);
+        }
+        .content-section {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .content-section.active {
+            display: block;
+        }
+        .plugin-card {
+            border: 1px solid #EAEAEA;
+            transition: all 0.2s ease-in-out;
+            display: flex;
+            flex-direction: column;
+        }
+        .plugin-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+        }
+        .plugin-card-content {
+            flex-grow: 1;
+        }
+        .step-card {
+            border-left: 4px solid #9C6644;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="flex min-h-screen">
+        <aside id="sidebar" class="w-72 bg-white shadow-sm p-6 sticky top-0 h-screen flex flex-col">
+            <div class="flex items-center mb-10">
+                 <div class="w-12 h-12 bg-gradient-to-br from-[#9C6644] to-[#C08C6E] rounded-full flex items-center justify-center mr-3">
+                    <i class="fa-solid fa-gift text-white text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold text-gray-800">Hediye-ci.com</h1>
+                    <p class="text-xs text-gray-500">Ultra Detaylı Kılavuz</p>
+                </div>
+            </div>
+            <nav id="nav-menu" class="flex-1 overflow-y-auto">
+                <a href="#" data-target="overview" class="sidebar-link active flex items-center py-3 px-4 rounded-lg text-gray-700 font-medium">
+                    <i class="fa-solid fa-house w-6 text-center"></i> Genel Bakış
+                </a>
+                <a href="#" data-target="wordpress-basics" class="sidebar-link flex items-center py-3 px-4 rounded-lg text-gray-700 font-medium mt-2">
+                    <i class="fa-brands fa-wordpress-simple w-6 text-center"></i> WordPress Temelleri
+                </a>
+                <a href="#" data-target="woodmart-theme" class="sidebar-link flex items-center py-3 px-4 rounded-lg text-gray-700 font-medium mt-2">
+                    <i class="fa-solid fa-palette w-6 text-center"></i> Woodmart Tema Yönetimi
+                </a>
+                <a href="#" data-target="product-management" class="sidebar-link flex items-center py-3 px-4 rounded-lg text-gray-700 font-medium mt-2">
+                    <i class="fa-solid fa-box-open w-6 text-center"></i> Ürün ve Sipariş Yönetimi
+                </a>
+                 <a href="#" data-target="marketing" class="sidebar-link flex items-center py-3 px-4 rounded-lg text-gray-700 font-medium mt-2">
+                    <i class="fa-solid fa-bullhorn w-6 text-center"></i> Pazarlama ve SEO
+                </a>
+                <a href="#" data-target="plugins" class="sidebar-link flex items-center py-3 px-4 rounded-lg text-gray-700 font-medium mt-2">
+                    <i class="fa-solid fa-puzzle-piece w-6 text-center"></i> Eklentiler ve Görevleri
+                </a>
+                <a href="#" data-target="maintenance" class="sidebar-link flex items-center py-3 px-4 rounded-lg text-gray-700 font-medium mt-2">
+                    <i class="fa-solid fa-shield-halved w-6 text-center"></i> Bakım ve Güvenlik
+                </a>
+            </nav>
+        </aside>
+
+        <main class="flex-1 p-8 md:p-12 overflow-y-auto">
+            
+            <section id="overview" class="content-section active">
+                <h1 class="text-4xl font-bold text-[#9C6644]">Site Yönetim Kılavuzuna Hoş Geldiniz!</h1>
+                <p class="mt-4 text-lg text-gray-600">Bu kılavuz, Hediye-ci.com web sitenizi bir uzman gibi yönetmeniz için gereken tüm bilgileri içermektedir. Amacımız, teknik bilgiye ihtiyaç duymadan sitenizin tüm potansiyelini kullanabilmenizi sağlamaktır. Soldaki menüyü kullanarak aradığınız konuya kolayca ulaşabilirsiniz.</p>
+                
+                <div class="mt-10 p-6 bg-amber-50 border border-amber-200 rounded-lg">
+                    <h2 class="font-bold text-2xl text-amber-800">Yönetim Felsefesi: 3 Temel Bileşen</h2>
+                    <p class="mt-2 text-amber-700">Siteniz, birbiriyle mükemmel uyum içinde çalışan üç ana sistemden oluşur. Bu üçlünün nasıl çalıştığını anlamak, yönetimi çok daha kolay hale getirecektir:</p>
+                </div>
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                        <i class="fa-brands fa-wordpress text-4xl text-[#C08C6E]"></i>
+                        <h3 class="font-bold text-xl mt-3">1. WordPress: Sitenizin İskeleti</h3>
+                        <p class="text-gray-600 mt-2">WordPress, sitenizin temel altyapısıdır; bir binanın temeli ve taşıyıcı kolonları gibidir. Sayfalar ('Hakkımızda', 'İletişim'), menüler, kullanıcılar ve medya dosyaları gibi temel içerikler burada yönetilir. Sitenizin "Ne söylediğini" WordPress belirler.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                        <i class="fa-solid fa-store text-4xl text-[#C08C6E]"></i>
+                        <h3 class="font-bold text-xl mt-3">2. WooCommerce: Ticari Motorunuz</h3>
+                        <p class="text-gray-600 mt-2">WooCommerce, bu iskelet üzerine kurulmuş e-ticaret sistemidir. Ürünleri, stokları, fiyatları, siparişleri, ödemeleri ve kargo süreçlerini yönetir. Sitenizin "Ne sattığını" ve "Nasıl sattığını" WooCommerce kontrol eder.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                        <i class="fa-solid fa-tree text-4xl text-[#C08C6E]"></i>
+                        <h3 class="font-bold text-xl mt-3">3. Woodmart: Sitenizin Ruhu</h3>
+                        <p class="text-gray-600 mt-2">Woodmart ise sitenizin tasarımı, yani ziyaretçilerin gördüğü ve etkileşime girdiği arayüzdür. Renkler, yazı tipleri, sayfa düzenleri, ürünlerin sunumu gibi tüm görsel unsurlar Woodmart teması tarafından yönetilir. Sitenizin "Nasıl göründüğünü" ve "Nasıl hissettirdiğini" Woodmart belirler.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Diğer bölümler olduğu gibi kalacak... -->
+            <section id="wordpress-basics" class="content-section">
+                <h1 class="text-4xl font-bold text-[#9C6644]">WordPress Temelleri: Kontrol Paneli</h1>
+                <p class="mt-4 text-lg text-gray-600">Yönetim paneline (`hediye-ci.com/wp-admin`) giriş yaptığınızda sol tarafta gördüğünüz siyah menü, sitenizin kontrol merkezidir. İşte en sık kullanacağınız alanlar ve işlevleri:</p>
+                
+                <div class="mt-8 space-y-6">
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                        <h2 class="text-2xl font-bold mb-2">Yazılar vs. Sayfalar: Temel Fark</h2>
+                        <p>Bu ikisi sıkça karıştırılır, ancak aralarındaki fark önemlidir:</p>
+                        <ul class="list-disc list-inside mt-3 space-y-2 text-gray-700">
+                            <li><strong>Yazılar:</strong> Zamanla ilgili, güncel içeriklerdir. Örneğin, bir blog yazısı, bir duyuru veya yeni ürün tanıtımı. Kronolojik olarak sıralanırlar. "Yeni Yıl Hediye Fikirleri" bir <strong>Yazı</strong> olabilir.</li>
+                            <li><strong>Sayfalar:</strong> "Zamansız", statik içeriklerdir. Örneğin, "Hakkımızda", "İletişim", "Sıkça Sorulan Sorular" gibi. Hiyerarşik bir yapıları olabilir (örneğin, bir sayfanın alt sayfaları olabilir).</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                        <h2 class="text-2xl font-bold mb-2">Ortam Kütüphanesi</h2>
+                        <p><strong>"Ortam > Kütüphane"</strong> yoluyla ulaşılan bu bölüm, sitenize yüklediğiniz tüm görsellerin, PDF'lerin ve diğer dosyaların bulunduğu yerdir. Yeni bir görsel yüklediğinizde veya bir ürüne görsel eklediğinizde, o dosya buraya kaydedilir. Buradan mevcut görselleri düzenleyebilir, silebilir veya detaylarını (örn. alt metin) güncelleyebilirsiniz.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                        <h2 class="text-2xl font-bold mb-2">Görünüm > Menüler</h2>
+                        <p>Sitenizin üst kısmında (Header) ve alt kısmında (Footer) yer alan navigasyon linkleri buradan yönetilir. <strong>"Görünüm > Menüler"</strong> ekranında, hangi sayfaların, kategorilerin veya özel linklerin menüde görüneceğini sürükle-bırak yöntemiyle kolayca düzenleyebilirsiniz. Birden fazla menü olabilir (örn. Ana Menü, Kategori Menüsü, Footer Menüsü), bu yüzden doğru menüyü düzenlediğinizden emin olun.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="woodmart-theme" class="content-section">
+                <h1 class="text-4xl font-bold text-[#9C6644]">Woodmart Tema Yönetimi: Görsel Ustalık</h1>
+                <p class="mt-4 text-lg text-gray-600">Woodmart, sitenizin görsel kimliğini oluşturan güçlü bir araçtır. Sadece bir "görünüm" değil, aynı zamanda bir kullanıcı deneyimi platformudur.</p>
+                
+                <div class="mt-8 space-y-6">
+                    <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+                        <h2 class="text-2xl font-bold mb-2">Tema Ayarları (Theme Settings): Sitenizin DNA'sı</h2>
+                        <p><strong>"Woodmart > Theme Settings"</strong> paneli, sitenizin genel görünümünü ve davranışını kontrol eden merkezi bir komuta odasıdır. Buradan yapacağınız değişiklikler tüm siteye yansır. Örnek olarak:</p>
+                        <ul class="list-disc list-inside mt-3 space-y-2 text-gray-700">
+                            <li><strong>Genel > Logo & Favicon:</strong> Sitenizin logosunu ve tarayıcı sekmesinde görünen küçük ikonu (favicon) buradan yüklersiniz.</li>
+                            <li><strong>Stil ve Renkler:</strong> Sitenizin ana renk paletini, düğme renklerini, link renklerini ve arka plan renklerini buradan ayarlayabilirsiniz.</li>
+                            <li><strong>Tipografi:</strong> Başlıkların ve metinlerin hangi yazı tipinde, boyutta ve renkte olacağını buradan belirlersiniz.</li>
+                            <li><strong>Mağaza (Shop):</strong> Kategori sayfalarınızın nasıl görüneceğini (örn. bir sırada kaç ürün gösterileceği), ürün kartlarının üzerine gelince ne olacağını ve filtrelerin nerede konumlanacağını buradan yönetirsiniz.</li>
+                            <li><strong>Tek Ürün (Single Product):</strong> Bir ürün detay sayfasına girildiğinde görsellerin, fiyatın ve açıklamanın nasıl yerleşeceğini buradan seçersiniz.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+                        <h2 class="text-2xl font-bold mb-2">Elementor ile Sayfa İnşası</h2>
+                        <p>Anasayfa gibi karmaşık düzenlere sahip sayfalar Elementor ile oluşturulmuştur. Elementor, bir sayfayı "bölümler", "sütunlar" ve "bileşenler" (widget'lar) halinde düşünmenizi sağlar. Bir sayfayı düzenlerken:</p>
+                        <ul class="list-disc list-inside mt-3 space-y-2 text-gray-700">
+                           <li><strong>Canlı Önizleme:</strong> Yaptığınız her değişikliği anında görürsünüz.</li>
+                           <li><strong>Sürükle ve Bırak:</strong> Soldaki panelden bir bileşeni (başlık, resim, düğme vb.) alıp sayfanın istediğiniz yerine sürükleyebilirsiniz.</li>
+                           <li><strong>Mobil Uyumluluk:</strong> Düzenleme ekranının altındaki monitör ikonuna tıklayarak sayfanızın tablette ve mobilde nasıl göründüğünü kontrol edebilir ve sadece o cihazlara özel düzenlemeler yapabilirsiniz.</li>
+                        </ul>
+                         <p class="mt-3 bg-blue-50 p-3 rounded-lg text-blue-800"><strong>Önemli Not:</strong> Elementor ile bir sayfanın <strong>içeriğini</strong> düzenlersiniz. Sitenin logosu, menüsü gibi genel şablonunu ise <strong>Tema Ayarları</strong>'ndan değiştirirsiniz.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="product-management" class="content-section">
+                <h1 class="text-4xl font-bold text-[#9C6644]">Ürün ve Sipariş Yönetimi: E-Ticaretin Kalbi</h1>
+                <p class="mt-4 text-lg text-gray-600">Bu bölüm, mağazanızın günlük operasyonlarını yöneteceğiniz en kritik alandır.</p>
+                
+                <div class="mt-8">
+                    <h2 class="text-3xl font-bold mb-6">Detaylı Ürün Ekleme/Düzenleme Rehberi</h2>
+                    <p class="mb-6"><strong>"Ürünler > Yeni Ekle"</strong> veya mevcut bir ürünün altındaki "Düzenle" linkine tıklayarak bu ekrana ulaşırsınız. Her alanın ne işe yaradığını detaylıca inceleyelim:</p>
+                    <div class="space-y-6">
+                        <div class="bg-white p-6 rounded-xl shadow-sm step-card">
+                            <h3 class="font-bold text-xl"><span class="text-[#9C6644]">Alan 1:</span> Ürün Adı ve Uzun Açıklama</h3>
+                            <p class="mt-1 text-gray-700"><strong>Ürün Adı:</strong> Müşterinin ve Google'ın göreceği en önemli başlıktır. Açık, net ve ürünü tanımlayıcı olmalıdır. <br><strong>Uzun Açıklama:</strong> Sayfanın alt kısmında, sekmeler içinde yer alan detaylı bilgidir. Ürünün malzemesi, boyutları, kullanım talimatları gibi tüm ayrıntıları buraya yazabilirsiniz.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-sm step-card">
+                            <h3 class="font-bold text-xl"><span class="text-[#9C6644]">Alan 2:</span> Ürün Verisi Paneli</h3>
+                            <p class="mt-1 text-gray-700">Bu panel, ürünün ticari özelliklerini belirler:</p>
+                            <ul class="list-decimal list-inside mt-2 space-y-1">
+                                <li><strong>Genel:</strong> Fiyatlandırmanın yapıldığı yerdir. <strong>Normal Fiyat</strong> zorunludur. <strong>İndirimli Fiyat</strong> girerseniz, ürün indirimde görünür ve isterseniz bu indirimin ne zaman biteceğini "Zamanla" butonuyla planlayabilirsiniz.</li>
+                                <li><strong>Stok:</strong> <strong>Ürün Kodu (SKU)</strong>, her ürünü ve varyantını ayıran benzersiz bir koddur (örn. KUPA-KRM-01). Stok takibi için kritiktir. "Stok yönetimini etkinleştir" diyerek stok adedini girersiniz. Stok bittiğinde ürün otomatik olarak satışa kapanır.</li>
+                                <li><strong>Kargo:</strong> Ürünün ağırlık ve boyut bilgilerini girerek kargo ücreti hesaplamalarında kullanılmasını sağlayabilirsiniz.</li>
+                                <li><strong>Nitelikler:</strong> Ürünün renk, boyut gibi seçeneklerini buradan eklersiniz. Örneğin, "Renk" niteliği ekleyip "Kırmızı | Mavi | Yeşil" değerlerini girebilirsiniz. Eğer bu seçeneklerin fiyatı veya stoğu farklı olacaksa, "Varyasyonlar için kullanılır" kutucuğunu işaretlemelisiniz.</li>
+                                <li><strong>Varyasyonlar:</strong> Eğer nitelikleri varyasyon için işaretlediyseniz, bu sekmede her bir renk/boyut kombinasyonu için ayrı fiyat, stok ve görsel belirleyebilirsiniz. Bunun için ürün tipini "Basit Ürün" yerine <strong>"Varyasyonlu Ürün"</strong> yapmanız gerekir.</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-sm step-card">
+                            <h3 class="font-bold text-xl"><span class="text-[#9C6644]">Alan 3:</span> Kısa Açıklama</h3>
+                            <p class="mt-1 text-gray-700">Ürün verisi panelinin altında yer alır. Bu metin, ürün sayfasında fiyatın hemen altında görünür. Müşterinin ilk dikkatini çekecek, en can alıcı 2-3 cümleyi buraya yazmalısınız.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-sm step-card">
+                            <h3 class="font-bold text-xl"><span class="text-[#9C6644]">Alan 4:</span> Sağ Sütun Ayarları</h3>
+                            <p class="mt-1 text-gray-700"><strong>Ürün Kategorileri:</strong> Ürünün sitenin hangi kategorisinde yer alacağını buradan seçersiniz. Bu, müşterilerin aradıklarını kolay bulması için çok önemlidir. <br><strong>Ürün Görseli:</strong> Ürünün ana, vitrin fotoğrafıdır. <br><strong>Ürün Galerisi:</strong> Ürünün diğer açılardan çekilmiş fotoğraflarını buraya eklersiniz.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-12">
+                    <h2 class="text-3xl font-bold mb-6">Bir Siparişin Yaşam Döngüsü</h2>
+                    <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+                        <p><strong>"WooCommerce > Siparişler"</strong> menüsünde her sipariş belirli aşamalardan geçer:</p>
+                        <ol class="list-decimal list-inside mt-4 space-y-3 text-gray-700">
+                            <li><strong>Ödeme bekleniyor:</strong> Müşteri sipariş verdi ama henüz ödeme yapmadı (örn. Havale/EFT seçti).</li>
+                            <li><strong>İşleniyor:</strong> Müşteri ödemeyi başarıyla yaptı (İyzico ile). Bu sizin için "Siparişi hazırla ve kargola" demektir. Bu aşamada fatura kesilir, ürün paketlenir.</li>
+                            <li><strong>Tamamlandı:</strong> Ürünü kargoya verip sipariş detaylarından kargo takip numarasını girdikten sonra siparişin durumunu manuel olarak "Tamamlandı" yaparsınız. Bu işlem müşteriye "Siparişiniz kargolandı" e-postası gönderir.</li>
+                            <li><strong>İptal Edildi / Geri Ödendi:</strong> Müşteri isteği veya stok sorunu gibi nedenlerle iptal edilen veya para iadesi yapılan siparişlerin durumudur.</li>
+                        </ol>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="marketing" class="content-section">
+                <h1 class="text-4xl font-bold text-[#9C6644]">Pazarlama ve SEO Temelleri</h1>
+                <p class="mt-4 text-lg text-gray-600">Harika ürünleriniz olması yeterli değil, müşterilerin bu ürünleri bulabilmesi de gerekir. Sitenizde bu konuda size yardımcı olan güçlü araçlar var.</p>
+                
+                <div class="mt-8 space-y-6">
+                    <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+                        <h2 class="text-2xl font-bold mb-2">Rank Math SEO ile Google'da Yükselmek</h2>
+                        <p>Rank Math, sitenizin Google dostu olmasına yardımcı olan bir SEO asistanıdır. Her ürün veya sayfa düzenleme ekranının altında Rank Math paneli bulunur. Bu paneli kullanarak:</p>
+                        <ul class="list-disc list-inside mt-3 space-y-2 text-gray-700">
+                            <li><strong>Odak Anahtar Kelime Belirleme:</strong> O sayfanın Google'da hangi arama sorgusuyla bulunmasını istediğinizi belirlersiniz (örn. "kişiye özel ahşap hediye").</li>
+                            <li><strong>SEO Analizi:</strong> Rank Math, belirlediğiniz anahtar kelimeye göre sayfanızı analiz eder. Başlığınızın, açıklamalarınızın, görsellerinizin ne kadar uyumlu olduğunu size bir puan (0-100) ve yapılacaklar listesi ile söyler.</li>
+                            <li><strong>Snippet Önizlemesi:</strong> Sayfanızın Google arama sonuçlarında nasıl görüneceğini (başlık, link, açıklama) düzenlemenize olanak tanır. Çarpıcı bir başlık ve açıklama, tıklanma oranını artırır.</li>
+                        </ul>
+                         <p class="mt-3 bg-green-50 p-3 rounded-lg text-green-800"><strong>Pro-İpucu:</strong> Her ürününüz için benzersiz ve açıklayıcı bir "Odak Anahtar Kelime" belirleyip Rank Math skorunu yeşile getirmeye çalışmak, organik trafiğinizi zamanla ciddi şekilde artıracaktır.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+                        <h2 class="text-2xl font-bold mb-2">İndirim Kuponları ile Satışları Artırmak</h2>
+                        <p><strong>"Pazarlama > Kuponlar"</strong> menüsünden müşterilerinize özel indirimler tanımlayabilirsiniz. "Yeni kupon ekle" diyerek:</p>
+                        <ul class="list-disc list-inside mt-3 space-y-2 text-gray-700">
+                           <li><strong>Kupon Kodu:</strong> Müşterinin gireceği kodu belirlersiniz (örn. HOSGELDIN10).</li>
+                           <li><strong>İndirim Türü:</strong> Sepette yüzdesel indirim (%), sabit tutarda indirim (TL) veya ücretsiz kargo gibi seçenekler belirleyebilirsiniz.</li>
+                           <li><strong>Kullanım Kısıtlamaları:</strong> Kuponun geçerli olması için minimum sepet tutarı belirleyebilir, sadece belirli ürünlerde veya kategorilerde geçerli olmasını sağlayabilir veya her müşterinin sadece bir kez kullanabilmesini ayarlayabilirsiniz.</li>
+                        </ul>
+                    </div>
+                     <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+                        <h2 class="text-2xl font-bold mb-2">Mailchimp (MC4WP) ile E-posta Listesi Oluşturma</h2>
+                        <p>Bu eklenti, sitenizde e-bülten aboneliği formları oluşturmanızı sağlar. Müşteriler ödeme yaparken veya sitenin alt kısmındaki forma e-postalarını bırakarak listenize kaydolabilir. Bu liste, yeni ürünleri, kampanyaları veya özel indirimleri doğrudan müşterilerinize duyurmak için en değerli pazarlama varlığınızdır.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="plugins" class="content-section">
+                <h1 class="text-4xl font-bold text-[#9C6644]">Eklentiler: Sitenizin Süper Güçleri</h1>
+                <p class="mt-4 text-lg text-gray-600">Eklentiler, sitenize standart dışı özellikler ekleyen ve iş akışlarınızı otomatikleştiren araçlardır. Onları, işinizi kolaylaştıran uzman personeliniz gibi düşünebilirsiniz.</p>
+                
+                <div class="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    
+                    <div class="plugin-card bg-white p-6 rounded-lg">
+                        <div class="plugin-card-content">
+                            <h3 class="font-bold text-lg">Kargo Entegratör (Operasyonel Verimlilik)</h3>
+                            <p class="mt-2 text-gray-700"><strong>Görevi:</strong> Bu eklenti, siteniz ile anlaşmalı kargo firmanız arasında bir köprü kurar. Manuel veri girişini ortadan kaldırarak kargo sürecini <strong>otomatikleştirir.</strong></p>
+                            <p class="mt-2 text-gray-700"><strong>Nasıl Çalışır?</strong> Bir sipariş durumu "İşleniyor" olduğunda, eklenti siparişteki müşteri adı, adresi gibi bilgileri otomatik olarak kargo firmasının sistemine gönderir. Kargo firması bu bilgiyle bir kargo kaydı ve takip numarası oluşturur. Eklenti, bu takip numarasını geri alıp siparişin içine yazar.</p>
+                        </div>
+                        <p class="mt-3 font-semibold text-sm text-gray-800 bg-gray-50 p-3 rounded-md"><strong>Yönetim Notu:</strong> Bu eklenti size her siparişte 5-10 dakika kazandırır ve insan hatası riskini (yanlış adres yazma vb.) sıfıra indirir. Sipariş durumunu "Tamamlandı" yaptığınızda, müşteriye giden e-postaya kargo takip numarası otomatik eklenir. Bu, hem zaman tasarrufu hem de profesyonel bir müşteri deneyimi demektir.</p>
+                    </div>
+
+                    <div class="plugin-card bg-white p-6 rounded-lg">
+                        <div class="plugin-card-content">
+                            <h3 class="font-bold text-lg">WooCommerce Product Add-Ons (Satış Artırıcı)</h3>
+                            <p class="mt-2 text-gray-700"><strong>Görevi:</strong> Ürünlerinize standart fiyatlarının dışında ekstra, ücretli seçenekler eklemenizi sağlar. Bu, bir hediye sitesi için en değerli eklentilerden biridir.</p>
+                             <p class="mt-2 text-gray-700"><strong>Kullanım Alanları:</strong></p>
+                            <ul class="list-disc list-inside mt-2 space-y-1 text-sm">
+                                <li><strong>Hediye Paketi:</strong> "+10 TL" karşılığında bir onay kutusu.</li>
+                                <li><strong>Özel Not:</strong> Müşterinin hediye notunu yazabileceği bir metin alanı.</li>
+                                <li><strong>İsim Yazdırma:</strong> Ürünün üzerine isim işlenmesi için bir metin girişi.</li>
+                                <li><strong>Ekstra Malzeme:</strong> Ürünün yanında gidecek çikolata, balon gibi ekstralar için bir seçenek.</li>
+                            </ul>
+                        </div>
+                        <p class="mt-3 font-semibold text-sm text-gray-800 bg-gray-50 p-3 rounded-md"><strong>Yönetim Notu:</strong> Bir ürünü düzenlerken, "Ürün Verisi" panelinde "Eklentiler" (Add-ons) sekmesini göreceksiniz. Buradan her ürün için özel seçenekler oluşturabilirsiniz. Bu eklenti, <strong>ortalama sepet tutarını (AOV)</strong> artırmak ve müşteriye kişiselleştirilmiş bir deneyim sunmak için en güçlü silahınızdır.</p>
+                    </div>
+
+                    <div class="plugin-card bg-white p-6 rounded-lg">
+                        <div class="plugin-card-content">
+                            <h3 class="font-bold text-lg">WP Rocket (Performans)</h3>
+                            <p class="mt-2 text-gray-700"><strong>Görevi:</strong> Sitenizin bir "fotoğrafını" çekerek (önbelleğe alarak) her ziyaretçiye tekrar tekrar tüm siteyi yüklemek yerine bu hazır fotoğrafı gösterir. Bu da inanılmaz bir hız artışı sağlar. CSS ve JavaScript dosyalarını optimize eder.</p>
+                        </div>
+                        <p class="mt-3 font-semibold text-sm text-gray-800 bg-gray-50 p-3 rounded-md"><strong>Yönetim Notu:</strong> Genellikle "ayarla ve unut" tarzı bir eklentidir. Sitede görsel bir değişiklik yaptığınızda (örn. renk, logo) ve bu değişikliği göremediğinizde, üst yönetim çubuğundaki "WP Rocket > Önbelleği Temizle" seçeneğine tıklamanız yeterlidir.</p>
+                    </div>
+
+                    <div class="plugin-card bg-white p-6 rounded-lg">
+                        <div class="plugin-card-content">
+                            <h3 class="font-bold text-lg">Imagify (Görsel Optimizasyonu)</h3>
+                            <p class="mt-2 text-gray-700"><strong>Görevi:</strong> Yüksek çözünürlüklü ürün görselleri siteyi yavaşlatır. Imagify, siz bir görsel yüklediğinizde bunu otomatik olarak algılar, boyutunu (kilobayt olarak) kalitesini gözle görülür şekilde düşürmeden sıkıştırır ve modern WebP formatına dönüştürür.</p>
+                        </div>
+                         <p class="mt-3 font-semibold text-sm text-gray-800 bg-gray-50 p-3 rounded-md"><strong>Yönetim Notu:</strong> Otomatik çalışır. Ayda bir "Ortam > Imagify" menüsünden toplu optimizasyon yaparak gözden kaçan bir görsel olup olmadığını kontrol edebilirsiniz. Hızlı bir site için hayati öneme sahiptir.</p>
+                    </div>
+                    
+                    <div class="plugin-card bg-white p-6 rounded-lg">
+                         <div class="plugin-card-content">
+                            <h3 class="font-bold text-lg">SMTP Mailer (İletişim Güvenilirliği)</h3>
+                            <p class="mt-2 text-gray-700"><strong>Görevi:</strong> "Siparişiniz alındı", "Siparişiniz kargolandı" gibi sitenizden giden otomatik e-postaların müşterilerin spam (istenmeyen) kutusuna düşmesini engeller. Sunucu yerine güvenilir bir e-posta gönderim servisi (SMTP) üzerinden e-postaları yollar.</p>
+                        </div>
+                        <p class="mt-3 font-semibold text-sm text-gray-800 bg-gray-50 p-3 rounded-md"><strong>Yönetim Notu:</strong> Bu eklenti, müşteri iletişiminin sorunsuz akmasını sağlayan sessiz bir kahramandır. Ayarları bir kez yapılır ve genellikle dokunulmaz. Eğer müşteriler "e-posta gelmedi" derse, bu eklentinin ayarları kontrol edilmelidir.</p>
+                    </div>
+
+                    <div class="plugin-card bg-white p-6 rounded-lg">
+                         <div class="plugin-card-content">
+                            <h3 class="font-bold text-lg">Loco Translate (Çeviri Aracı)</h3>
+                            <p class="mt-2 text-gray-700"><strong>Görevi:</strong> Woodmart temasında veya bazı eklentilerde yer alan, arayüzden değiştirilemeyen İngilizce ifadeleri (örn. "Add to Cart" yerine "Sepete Ekle" yazması gibi) Türkçe'ye çevirmenizi sağlar.</p>
+                        </div>
+                        <p class="mt-3 font-semibold text-sm text-gray-800 bg-gray-50 p-3 rounded-md"><strong>Yönetim Notu:</strong> Sitede değiştirilemeyen bir İngilizce metin fark ederseniz, sol menüdeki "Loco Translate" bölümünden ilgili temayı veya eklentiyi seçip, metni aratarak kolayca çevirebilirsiniz.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="maintenance" class="content-section">
+                <h1 class="text-4xl font-bold text-[#9C6644]">Site Bakım ve Güvenlik Rutini</h1>
+                <p class="mt-4 text-lg text-gray-600">Sitenizi bir araba gibi düşünün; düzenli bakım, performansını yüksek tutar ve büyük sorunları önler. İşte aylık bakım listeniz:</p>
+                
+                <div class="mt-10 bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+                    <h2 class="text-2xl font-bold mb-4">Güvenli Güncelleme Prosedürü (Çok Önemli!)</h2>
+                    <p class="mb-4">Güncellemeler güvenlik ve yeni özellikler için kritiktir, ancak nadiren de olsa sorun çıkarabilirler. Bu yüzden her zaman şu sırayı izleyin:</p>
+                     <ol class="list-decimal list-inside mt-4 space-y-3">
+                        <li><strong>Yedek Alın veya Aldırın:</strong> Güncelleme yapmadan önce hosting (sunucu) panelinizden veya bir yedekleme eklentisiyle sitenin tam bir yedeğini alın. Bu sizin sigortanızdır.</li>
+                        <li><strong>Eklentileri Güncelleyin:</strong> Önce eklentileri tek tek veya toplu olarak güncelleyin.</li>
+                        <li><strong>Temayı Güncelleyin:</strong> Sonra Woodmart temasını güncelleyin.</li>
+                        <li><strong>WordPress'i Güncelleyin:</strong> En son WordPress ana sürümünü güncelleyin.</li>
+                        <li><strong>Kontrol Edin:</strong> Güncellemeler bittikten sonra sitenizin anasayfasını, bir kategori ve bir ürün sayfasını gezerek her şeyin yolunda göründüğünü kontrol edin.</li>
+                    </ol>
+                </div>
+                <div class="mt-6 bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+                    <h2 class="text-2xl font-bold mb-4">Diğer Bakım Görevleri</h2>
+                    <ul class="space-y-6">
+                        <li class="flex items-start">
+                            <div class="w-10 h-10 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                                <i class="fa-solid fa-broom"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg">Veritabanı Temizliği (Ayda Bir)</h3>
+                                <p class="text-gray-700"><strong>Advanced Database Cleaner</strong> eklentisini kullanarak biriken gereksiz verileri (yazı revizyonları, spam yorumlar, geçici veriler) temizleyin. Bu, sitenizin veritabanını hafifleterek sorguların daha hızlı çalışmasını sağlar. Eklentinin kendi panelindeki talimatları izlemeniz yeterlidir.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="w-10 h-10 bg-red-100 text-red-700 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                                <i class="fa-solid fa-user-shield"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg">Kullanıcı ve Parola Güvenliği</h3>
+                                <p class="text-gray-700">Yönetim paneline giriş için kullandığınız parolanın karmaşık (büyük/küçük harf, rakam, sembol içeren) olduğundan emin olun. Sitenize sizden başka yönetici eklememeye özen gösterin. Eğer birine geçici erişim vermeniz gerekirse, işi bittiğinde kullanıcısını silin.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('#nav-menu a');
+            const contentSections = document.querySelectorAll('.content-section');
+
+            function switchTab(targetId) {
+                contentSections.forEach(section => {
+                    section.classList.remove('active');
+                });
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                });
+
+                const targetSection = document.getElementById(targetId);
+                const targetLink = document.querySelector(`a[data-target="${targetId}"]`);
+                
+                if (targetSection) {
+                    targetSection.classList.add('active');
+                }
+                if (targetLink) {
+                    targetLink.classList.add('active');
+                }
+                document.querySelector('main').scrollTop = 0;
+            }
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    const targetId = this.getAttribute('data-target');
+                    switchTab(targetId);
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
